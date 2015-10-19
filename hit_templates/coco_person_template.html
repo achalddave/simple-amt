@@ -151,8 +151,8 @@
           }
 
           // Set up the image
-          var canvas = document.getElementById('image-canvas');
-          console.log(images[idx].width);
+          var jCanvas = $('#image-canvas');
+          var canvas = jCanvas[0];
           canvas.width = images[idx].width;
           canvas.height = images[idx].height;
           var ctx = canvas.getContext("2d");
@@ -186,6 +186,8 @@
           maskCtx.rect(scaledBoxX, scaledBoxY, scaledBoxWidth, scaledBoxHeight);
           maskCtx.fill();
           ctx.drawImage(maskCanvas, 0, 0);
+
+          jCanvas.css('height', '300px');
 
           // Refresh the counter
           $('.counter-top').text(idx + 1);
