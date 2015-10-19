@@ -39,10 +39,11 @@
         </canvas>
       </div>
       <div id="direction-annotations-container">
-        <span class="direction-annotation btn btn-default" id="left">Left</span>
-        <span class="direction-annotation btn btn-default" id="away">Away from you</span>
-        <span class="direction-annotation btn btn-default" id="right">Right</span>
-        <span class="direction-annotation btn btn-default" id="towards">Towards you</span>
+        <span class="direction-annotation btn btn-default" id="direction-left">Left</span>
+        <span class="direction-annotation btn btn-default" id="direction-away">Away from you</span>
+        <span class="direction-annotation btn btn-default" id="direction-right">Right</span>
+        <span class="direction-annotation btn btn-default" id="direction-towards">Towards you</span>
+        <span class="direction-annotation btn btn-default" id="direction-ambiguous">Ambiguous direction</span>
       </div>
 
       <div id='button-div'>
@@ -64,9 +65,30 @@
 
         var input = null;
 
+        var key_to_button_id = {
+          "a": "direction-left",
+          "w": "direction-away",
+          "d": "direction-right",
+          "s": "direction-towards",
+          "m": "direction-ambiguous"
+        };
+        var button_id_to_direction = {
+          "direction-left": 0,
+          "direction-away": 1,
+          "direction-right": 2,
+          "direction-towards": 3,
+          "direction-ambiguous": -2
+        };
+        var direction_to_button_id = {
+          '0': "direction-left",
+          '1': "direction-away",
+          '2': "direction-right",
+          '3': "direction-towards",
+          '-2': "direction-ambiguous"
+        };
+
         // Direction of each person, parallel to input.
-        var direction_choices = {"left": 0, "away": 1, "right": 2, "towards": 3};
-        var directions = []
+        var directions = [];
 
         // Some variables to track state of the HIT.
         var idx = 0;
@@ -93,6 +115,31 @@
             img.src = img_url;
             images.push(img);
           });
+
+          // Setup keyboard shortcuts
+          if (enabled) {
+            // Highlight button on keypress so there is some visual feedback,
+            // skip on keyup.
+            $(document).keypress(function(e) {
+              var key = String.fromCharCode(e.which).toLowerCase();
+              if (key in key_to_button_id) {
+                $('.direction-annotation').removeClass('active');
+                $('#' + key_to_button_id[key]).addClass('active');
+              }
+            });
+            $(document).keyup(function(e) {
+              var key = String.fromCharCode(e.which).toLowerCase();
+              if (key in key_to_button_id) {
+                $('#' + key_to_button_id[key]).click();
+              } else {
+                if (e.which == 39) { // right arrow
+                  $('#next-btn').click();
+                } else if (e.which == 37) { // left arrow
+                  $('#prev-btn').click();
+                }
+              }
+            });
+          }
 
           render();
         }
@@ -170,7 +217,7 @@
           selected_direction_buttons = $('.direction-annotation.active');
           if (selected_direction_buttons.length == 1) {
             selected_direction_id = selected_direction_buttons[0].id;
-            directions[idx] = direction_choices[selected_direction_id];
+            directions[idx] = button_id_to_direction[selected_direction_id];
           }
         }
 
