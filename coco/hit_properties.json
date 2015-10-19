@@ -1,0 +1,10 @@
+{
+  "title": "Mark the direction people are facing",
+  "description": "Mark the direction each person is facing relative to you.",
+  "keywords": "image,images,person,pose",
+  "reward": 0.05,
+  "duration": 900,
+  "frame_height": 20000,
+  "max_assignments": 1,
+  "country": "US"
+}
