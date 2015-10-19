@@ -111,7 +111,6 @@
           _.each(input, function(task_info) {
             var img = new Image();
             var img_url = task_info['image_url'];
-            img.onload = function() { console.log('loaded image from ' + img_url); };
             img.src = img_url;
             images.push(img);
           });
@@ -252,7 +251,6 @@
               return false;
             }
             var output = _.map(_.zip(input, directions), function(x) {
-              console.log(x[1]);
               return {'input': x[0], 'direction': x[1]};
             });
             simpleamt.setOutput(output);
