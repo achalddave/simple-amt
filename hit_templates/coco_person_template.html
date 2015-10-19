@@ -156,36 +156,31 @@
           canvas.width = images[idx].width;
           canvas.height = images[idx].height;
           var ctx = canvas.getContext("2d");
-          ctx.fillStyle = "red";
           ctx.drawImage(images[idx], 0, 0);
 
-          // Create a mask canvas for the bounding box, so we can highlight
-          // the bounding box by darkening the rest of the image.
-          var maskCanvas = document.createElement('canvas');
-          maskCanvas.width = canvas.width;
-          maskCanvas.height = canvas.height;
-          var maskCtx = maskCanvas.getContext("2d");
-
           var boundingBox = input[idx]['annotation']['bbox'];
-
+          var strokeWidth = 6;
           var boxX = boundingBox[0],
               boxY = boundingBox[1],
               boxWidth = boundingBox[2],
               boxHeight = boundingBox[3];
 
-          var boundingBoxScalingFactor = 1.3,
-              scaledBoxWidth = boxWidth * boundingBoxScalingFactor,
-              scaledBoxHeight = boxHeight * boundingBoxScalingFactor,
-              scaledBoxX = boxX - (scaledBoxWidth - boxWidth) / 2.0,
-              scaledBoxY = boxY - (scaledBoxHeight - boxHeight) / 2.0;
+          // Draw a red outline around a black outline, which should hopefully
+          // provide enough contrast. Note that the inside of the bounding
+          // box itself will not be stroked, since we scale the bounding box
+          // to stroke only the outside.
+          ctx.strokeStyle = "red";
+          ctx.lineWidth = strokeWidth;
+          ctx.strokeRect(boxX - strokeWidth,
+                         boxY - strokeWidth,
+                         boxWidth + 2*strokeWidth,
+                         boxHeight + 2*strokeWidth);
 
-          maskCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-          maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
-          maskCtx.fillStyle = 'black';
-          maskCtx.globalCompositeOperation = 'xor';
-          maskCtx.rect(scaledBoxX, scaledBoxY, scaledBoxWidth, scaledBoxHeight);
-          maskCtx.fill();
-          ctx.drawImage(maskCanvas, 0, 0);
+          ctx.strokeStyle = "black";
+          ctx.strokeRect(boxX - strokeWidth / 2,
+                         boxY - strokeWidth / 2,
+                         boxWidth + strokeWidth,
+                         boxHeight + strokeWidth);
 
           jCanvas.css('height', '300px');
 
