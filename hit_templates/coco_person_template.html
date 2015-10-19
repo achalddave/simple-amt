@@ -39,11 +39,11 @@
         </canvas>
       </div>
       <div id="direction-annotations-container">
-        <span class="direction-annotation btn btn-default" id="direction-left">Left</span>
-        <span class="direction-annotation btn btn-default" id="direction-away">Away from you</span>
-        <span class="direction-annotation btn btn-default" id="direction-right">Right</span>
-        <span class="direction-annotation btn btn-default" id="direction-towards">Towards you</span>
-        <span class="direction-annotation btn btn-default" id="direction-ambiguous">Ambiguous direction</span>
+        <button class="direction-annotation btn btn-default" id="direction-left" disabled>Left</button>
+        <button class="direction-annotation btn btn-default" id="direction-away" disabled>Away from you</button>
+        <button class="direction-annotation btn btn-default" id="direction-right" disabled>Right</button>
+        <button class="direction-annotation btn btn-default" id="direction-towards" disabled>Towards you</button>
+        <button class="direction-annotation btn btn-default" id="direction-ambiguous" disabled>Ambiguous direction</button>
       </div>
 
       <div id='button-div'>
@@ -195,6 +195,7 @@
             var next_btn = $('#next-btn');
             prev_btn.prop('disabled', true);
             next_btn.prop('disabled', true);
+            $('.direction-annotation').prop('disabled', false);
             // If an answer was already provided for this image, set the
             // respective button to be active.
             if (directions[idx] != -1
