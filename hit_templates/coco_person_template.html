@@ -176,28 +176,92 @@
           ctx.drawImage(images[idx], 0, 0);
 
           var boundingBox = input[idx]['annotation']['bbox'];
-          var strokeWidth = 6;
-          var boxX = boundingBox[0],
-              boxY = boundingBox[1],
-              boxWidth = boundingBox[2],
-              boxHeight = boundingBox[3];
+          var strokeWidth = images[idx].height / 50;
+
+          function updateBoxForStroke(boxDimensions, strokeWidth) {
+            // Scale the bounding box so that when you stroke the border, the
+            // inside contains as much space as the original bounding box. This
+            // is necessary since the Canvas API draws half of the "strokeWidth"
+            // inside the rectangle.
+            //
+            // Params:
+            //   boxDimensions: [topLeftX, topLeftY, width, height] of a
+            //     bounding box.
+            //  strokeWidth (int): Stroke width used for canvas.
+            //
+            // Returns:
+            //   [topLeftX, topLeftY, width, height] of updated bounding box.
+            var boxStartX = boxDimensions[0],
+                boxStartY = boxDimensions[1],
+                boxWidth = boxDimensions[2],
+                boxHeight = boxDimensions[3];
+
+            // Move strokeWidth/2 left and up.
+            boxStartX = boxStartX - (strokeWidth / 2.0);
+            boxStartY = boxStartY - (strokeWidth / 2.0);
+            // Increase dimensions by strokeWidth (since we lose strokeWidth/2
+            // on each side to the stroke).
+            boxWidth = boxWidth + strokeWidth;
+            boxHeight = boxHeight + strokeWidth;
+
+            return [boxStartX, boxStartY, boxWidth, boxHeight];
+          }
+
+          function clipBoxInCanvas(boxDimensions, canvasDimensions) {
+            // Clips bounding box so it is within the canvas.
+            //
+            // Params:
+            //   boxDimensions: [topLeftX, topLeftY, width, height] of a
+            //     bounding box.
+            //   canvasDimensions: [width, height] of the Canvas.
+            //
+            // Returns:
+            //   [topLeftX, topLeftY, width, height] of updated bounding box.
+            //
+            var boxStartX = boxDimensions[0],
+                boxStartY = boxDimensions[1],
+                boxWidth = boxDimensions[2],
+                boxHeight = boxDimensions[3],
+                boxEndX = boxStartX + boxWidth,
+                boxEndY = boxStartY + boxHeight,
+                canvasWidth = canvasDimensions[0],
+                canvasHeight = canvasDimensions[1];
+
+            boxStartX = Math.max(boxStartX, 0);
+            boxStartY = Math.max(boxStartY, 0);
+            boxEndX   = Math.min(boxEndX, canvasWidth);
+            boxEndY   = Math.min(boxEndY, canvasHeight);
+            return [boxStartX, boxStartY, boxEndX - boxStartX, boxEndY - boxStartY];
+          }
 
           // Draw a red outline around a black outline, which should hopefully
           // provide enough contrast. Note that the inside of the bounding
           // box itself will not be stroked, since we scale the bounding box
           // to stroke only the outside.
+
+          // Leave enough room for both rectangles. This one will squeeze
+          // 0.5 stroke widths into the rectangle, and the other one will
+          // squeeze 1.0 stroke widths into the rectangle; so we need to
+          // pretend like we're going to draw a 3*strokeWidth stroke.
+          var redBoxDimensions = clipBoxInCanvas(
+            updateBoxForStroke(boundingBox, 3 * strokeWidth),
+            [canvas.width, canvas.height]);
+
           ctx.strokeStyle = "red";
           ctx.lineWidth = strokeWidth;
-          ctx.strokeRect(boxX - strokeWidth,
-                         boxY - strokeWidth,
-                         boxWidth + 2*strokeWidth,
-                         boxHeight + 2*strokeWidth);
+          ctx.strokeRect(redBoxDimensions[0],
+                         redBoxDimensions[1],
+                         redBoxDimensions[2],
+                         redBoxDimensions[3]);
 
           ctx.strokeStyle = "black";
-          ctx.strokeRect(boxX - strokeWidth / 2,
-                         boxY - strokeWidth / 2,
-                         boxWidth + strokeWidth,
-                         boxHeight + strokeWidth);
+          var blackBoxDimensions = clipBoxInCanvas(
+            updateBoxForStroke(boundingBox, strokeWidth),
+            [canvas.width, canvas.height]);
+          ctx.strokeRect(blackBoxDimensions[0],
+                         blackBoxDimensions[1],
+                         blackBoxDimensions[2],
+                         blackBoxDimensions[3]);
 
           jCanvas.css('height', '300px');
 
