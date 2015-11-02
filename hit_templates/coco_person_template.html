@@ -141,6 +141,8 @@
                 $('#' + key_to_button_id[key]).addClass('active');
               }
             });
+
+            // Handle direction marking, previous/next buttons.
             $(document).keyup(function(e) {
               var key = String.fromCharCode(e.which).toLowerCase();
               if (key in key_to_button_id) {
