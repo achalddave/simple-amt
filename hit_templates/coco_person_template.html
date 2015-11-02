@@ -27,6 +27,11 @@
       #direction-annotations-container {
         margin: 20pt;
       }
+      #direction-annotations-shortcuts {
+        margin: 0 auto;
+        width: 500px;
+        text-align: left;
+      }
     </style>
 
   </head>
@@ -44,6 +49,16 @@
         <button class="direction-annotation btn btn-default" id="direction-right" disabled>Right</button>
         <button class="direction-annotation btn btn-default" id="direction-towards" disabled>Towards you</button>
         <button class="direction-annotation btn btn-default" id="direction-ambiguous" disabled>Ambiguous direction</button>
+      </div>
+      <div id="direction-annotations-shortcuts">
+        Keyboard shortucuts:<br/>
+        <ul>
+          <li>w: Away from you</li>
+          <li>a: Left</li>
+          <li>s: Towards you</li>
+          <li>d: Right</li>
+          <li>m: Ambiguous direction</li>
+        </ul>
       </div>
 
       <div id='button-div'>
