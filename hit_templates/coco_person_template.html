@@ -211,16 +211,25 @@
             return;
           }
 
-          // Set up the image
+          // We're going to draw 2 rectangles around the image with the same
+          // strokeWidth. To avoid issues at the borders, we'll create a canvas
+          // with a 2*strokeWidth padding on all sides, and draw the image at
+          // the center.
+          var boundingBox = input[idx]['annotation']['bbox'].slice(); // copy
+          var strokeWidth = images[idx].height / 75;
+          // boundingBox is relative to image; make it relative to canvas.
+          boundingBox[0] += 2*strokeWidth;
+          boundingBox[1] += 2*strokeWidth;
+
+          // Set up the image.
           var jCanvas = $('#image-canvas');
           var canvas = jCanvas[0];
-          canvas.width = images[idx].width;
-          canvas.height = images[idx].height;
+          // Add 2*strokeWidth empty padding around image.
+          canvas.width = images[idx].width + 4*strokeWidth;
+          canvas.height = images[idx].height + 4*strokeWidth;
           var ctx = canvas.getContext("2d");
-          ctx.drawImage(images[idx], 0, 0);
-
-          var boundingBox = input[idx]['annotation']['bbox'];
-          var strokeWidth = images[idx].height / 50;
+          // Draw image at the center.
+          ctx.drawImage(images[idx], 2*strokeWidth, 2*strokeWidth);
 
           function updateBoxForStroke(boxDimensions, strokeWidth) {
             // Scale the bounding box so that when you stroke the border, the
@@ -287,27 +296,28 @@
           // 0.5 stroke widths into the rectangle, and the other one will
           // squeeze 1.0 stroke widths into the rectangle; so we need to
           // pretend like we're going to draw a 3*strokeWidth stroke.
-          var redBoxDimensions = clipBoxInCanvas(
-            updateBoxForStroke(boundingBox, 3 * strokeWidth),
+          var outerBoxDimensions = clipBoxInCanvas(
+            updateBoxForStroke(boundingBox, 3*strokeWidth),
             [canvas.width, canvas.height]);
 
           ctx.strokeStyle = "red";
           ctx.lineWidth = strokeWidth;
-          ctx.strokeRect(redBoxDimensions[0],
-                         redBoxDimensions[1],
-                         redBoxDimensions[2],
-                         redBoxDimensions[3]);
+          ctx.strokeRect(outerBoxDimensions[0],
+                         outerBoxDimensions[1],
+                         outerBoxDimensions[2],
+                         outerBoxDimensions[3]);
 
           ctx.strokeStyle = "black";
-          var blackBoxDimensions = clipBoxInCanvas(
+          var innerBoxDimensions = clipBoxInCanvas(
             updateBoxForStroke(boundingBox, strokeWidth),
             [canvas.width, canvas.height]);
-          ctx.strokeRect(blackBoxDimensions[0],
-                         blackBoxDimensions[1],
-                         blackBoxDimensions[2],
-                         blackBoxDimensions[3]);
+          ctx.strokeRect(innerBoxDimensions[0],
+                         innerBoxDimensions[1],
+                         innerBoxDimensions[2],
+                         innerBoxDimensions[3]);
 
-          jCanvas.css('height', '300px');
+          jCanvas.css('height', '500px');
+          jCanvas.css('max-width', '700px');
 
           // Refresh the counter
           $('.counter-top').text(idx + 1);
