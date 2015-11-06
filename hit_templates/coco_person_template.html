@@ -387,17 +387,35 @@
           // Set up submit handler.
           simpleamt.setupSubmit();
           $('#submit-btn').click(function() {
-            updateSelectedDirection();
-            invalid_directions = _.filter(directions, function(d) { return d == -1; });
-            if (invalid_directions.length > 0) {
-              alert('Direction for image ' + invalid_directions.join(', ') + ' missing.');
-              return false;
-            }
-            var output = _.map(_.zip(input, directions), function(x) {
-              return {'input': x[0], 'direction': x[1]};
-            });
-            simpleamt.setOutput(output);
+            submit()
           });
+        }
+
+        function getMissingAnnotations() {
+          // Get a list of indices of images that don't have a direction
+          // specified.
+          //
+          // Returns:
+          //  missing_annotations (list)
+          var invalid_direction_indices =
+            _.map(directions, function(d, idx) {
+              if (d == -1) { return idx + 1; } else { return -1; }
+            });
+          invalid_direction_indices =
+            _.filter(invalid_direction_indices,
+                     function(idx) { return idx != -1; })
+          return invalid_direction_indices;
+        }
+
+        function submit() {
+          updateSelectedDirection();
+          if (getMissingAnnotations().length > 0) {
+            alert('Direction for image(s) '
+                  + invalid_direction_indices.join(', ')
+                  + ' missing.');
+            return false;
+          }
+          simpleamt.setOutput(output);
         }
 
         main();
