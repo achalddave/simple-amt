@@ -160,7 +160,7 @@
 
           // Enable the UI if the HIT is not in preview mode.
           if (!simpleamt.isPreview()) {
-            enable_hit();
+            enableHit();
           }
 
           // Set up the directions.
@@ -348,10 +348,10 @@
         $('.direction-annotation').click(function() {
           $('.direction-annotation').removeClass('active');
           $(this).addClass('active');
-          set_idx(idx + 1);
+          setIdx(idx + 1);
         });
 
-        function update_selected_direction() {
+        function updateSelectedDirection() {
           selected_direction_buttons = $('.direction-annotation.active');
           if (selected_direction_buttons.length == 1) {
             selected_direction_id = selected_direction_buttons[0].id;
@@ -360,10 +360,10 @@
         }
 
         // Update the index, and save the text in the text area.
-        function set_idx(new_idx) {
+        function setIdx(new_idx) {
           if (new_idx < 0 || new_idx >= input.length) return;
 
-          update_selected_direction();
+          updateSelectedDirection();
           $('.direction-annotation').removeClass('active');
 
           idx = new_idx;
@@ -371,19 +371,19 @@
         }
 
         // Enable the UI.
-        function enable_hit() {
+        function enableHit() {
           enabled = true;
 
           // Enable components
-          $('#next-btn').click(function() { set_idx(idx + 1) });
-          $('#prev-btn').click(function() { set_idx(idx - 1) });
+          $('#next-btn').click(function() { setIdx(idx + 1) });
+          $('#prev-btn').click(function() { setIdx(idx - 1) });
           $('#text-area').prop('disabled', false);
           $('#submit-btn').prop('disabled', false);
 
           // Set up submit handler.
           simpleamt.setupSubmit();
           $('#submit-btn').click(function() {
-            update_selected_direction();
+            updateSelectedDirection();
             invalid_directions = _.filter(directions, function(d) { return d == -1; });
             if (invalid_directions.length > 0) {
               alert('Direction for image ' + invalid_directions.join(', ') + ' missing.');
