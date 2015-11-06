@@ -126,21 +126,24 @@
           "w": "direction-away",
           "d": "direction-right",
           "s": "direction-towards",
-          "m": "direction-ambiguous"
+          "n": "impossible-to-tell"
+          // "m": "direction-ambiguous"
         };
         var button_id_to_direction = {
           "direction-left": 0,
           "direction-away": 1,
           "direction-right": 2,
           "direction-towards": 3,
-          "direction-ambiguous": -2
+          // "direction-ambiguous": -2,
+          "impossible-to-tell": -3
         };
         var direction_to_button_id = {
-          '0': "direction-left",
-          '1': "direction-away",
-          '2': "direction-right",
-          '3': "direction-towards",
-          '-2': "direction-ambiguous"
+          "0": "direction-left",
+          "1": "direction-away",
+          "2": "direction-right",
+          "3": "direction-towards",
+          // "-2": "direction-ambiguous",
+          "-3": "impossible-to-tell"
         };
 
         // Direction of each person, parallel to input.
