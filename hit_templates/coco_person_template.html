@@ -11,7 +11,9 @@
 
     <style>
       #task-container {
-        text-align: center;
+        margin: 0 auto;
+        width: 50%;
+        min-width: 700px;
       }
       #button-div {
         margin-bottom: 10px;
@@ -26,40 +28,79 @@
       }
       #direction-annotations-container {
         margin: 20pt;
+        text-align: center;
       }
       #direction-annotations-shortcuts {
         margin: 0 auto;
-        width: 500px;
         text-align: left;
       }
+      #image-container {
+        text-align: center;
+      }
+      #button-div {
+        text-align: center;
+      }
+      .submit-hint {
+        text-align: center;
+        display: none;
+        font-size: 1.5em;
+        margin: 1em;
+        padding: 0;
+      }
     </style>
-
   </head>
   <body>
     <div id="task-container">
       <h2>Which direction is this person facing?</h2>
-      <div id='image-container'>
-        <canvas id='image-canvas'>
-        Your browser does not support canvas...
-        </canvas>
-      </div>
-      <div id="direction-annotations-container">
-        <button class="direction-annotation btn btn-default" id="direction-left" disabled>Left</button>
-        <button class="direction-annotation btn btn-default" id="direction-away" disabled>Away from you</button>
-        <button class="direction-annotation btn btn-default" id="direction-right" disabled>Right</button>
-        <button class="direction-annotation btn btn-default" id="direction-towards" disabled>Towards you</button>
-        <button class="direction-annotation btn btn-default" id="direction-ambiguous" disabled>Ambiguous direction</button>
+      <div id="instructions">
+        <p>
+          Hello! We're looking to figure out which way a person in each image is
+          facing.
+        </p>
+        <p>
+          An image may have multiple people, but we are interested only in the
+          person inside the red and black box.
+        </p>
+        <p>
+          Please mark each person as facing in one of four directions: "right",
+          "left", "towards you", "away from you". If two of these seem correct,
+          choose the one that looks most correct.
+        </p>
+        <p>
+          If you absolutely cannot tell which way a person is facing, mark
+          "Impossible to tell." Please use this very rarely, such as if the person
+          is not visible, or you only see a small part of the person that does
+          not indicate the direction.
+        </p>
       </div>
       <div id="direction-annotations-shortcuts">
         Keyboard shortucuts:<br/>
         <ul>
-          <li>w: Away from you</li>
-          <li>a: Left</li>
-          <li>s: Towards you</li>
-          <li>d: Right</li>
-          <li>m: Ambiguous direction</li>
+          <li><tt>w</tt>: Away from you</li>
+          <li><tt>a</tt>: Left</li>
+          <li><tt>s</tt>: Towards you</li>
+          <li><tt>d</tt>: Right</li>
+          <!-- <li>m: Ambiguous direction</li> -->
+          <li><tt>n</tt>: Impossible to tell</li>
+          <li><tt>Left arrow</tt>: Previous image</li>
+          <li><tt>Right arrow</tt>: Next image</li>
         </ul>
       </div>
+      <div id='image-container'>
+        <canvas id='image-canvas'>
+          Your browser does not support canvas...
+        </canvas>
+      </div>
+      <div id="direction-annotations-container">
+        <button class="direction-annotation btn btn-default" id="direction-left" disabled>Left (A)</button>
+        <button class="direction-annotation btn btn-default" id="direction-away" disabled>Away from you (W)</button>
+        <button class="direction-annotation btn btn-default" id="direction-right" disabled>Right (D)</button>
+        <button class="direction-annotation btn btn-default" id="direction-towards" disabled>Towards you (S)</button>
+        <!-- <button class="direction-annotation btn btn-default" id="direction-ambiguous" disabled>Ambiguous direction</button> -->
+        <button class="direction-annotation btn btn-default" id="impossible-to-tell" disabled>Impossible to tell (N)</button>
+      </div>
+      <div class="submit-hint" id="submit-hint-leftover"></div>
+      <div class="submit-hint" id="submit-hint-done">Scroll down and press submit if you're done!</div>
 
       <div id='button-div'>
         <button id='prev-btn' class='btn btn-lg btn-primary' disabled>Back</button>
