@@ -1,2 +1,3 @@
+hit_ids.txt
 *.json
 !hit_properties.json
