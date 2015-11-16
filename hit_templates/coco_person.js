@@ -10,12 +10,12 @@ String.prototype.format = function(placeholders) {
 // Global variables
 
 // Define some default input.
-  var DEFAULT_INPUT = [
-    {"image_id": 167765, "image_url": "http://mscoco.org/images/167765", "annotation": {"image_id": 167765, "bbox": [0.0, 1.44, 182.65, 629.93], "id": 183813}, "annotation_id": 183813},
-    {"image_id": 495312, "image_url": "http://mscoco.org/images/495312", "annotation": {"image_id": 495312, "bbox": [1.31, 28.26, 373.56, 470.91], "id": 183172}, "annotation_id": 183172},
-    {"image_id": 44474, "image_url": "http://mscoco.org/images/44474", "annotation": {"image_id": 44474, "bbox": [33.42, 11.94, 303.68, 407.76], "id": 183024}, "annotation_id": 183024},
-    {"image_id": 196842, "image_url": "http://mscoco.org/images/196842", "annotation": {"image_id": 196842, "bbox": [273.14, 82.25, 72.6, 129.68], "id": 183022, "direction": 3}, "annotation_id": 183022}
-  ];
+var DEFAULT_INPUT = [
+  {"image_id": 167765, "image_url": "http://mscoco.org/images/167765", "annotation": {"image_id": 167765, "bbox": [0.0, 1.44, 182.65, 629.93], "id": 183813}, "annotation_id": 183813},
+  {"image_id": 495312, "image_url": "http://mscoco.org/images/495312", "annotation": {"image_id": 495312, "bbox": [1.31, 28.26, 373.56, 470.91], "id": 183172}, "annotation_id": 183172},
+  {"image_id": 44474, "image_url": "http://mscoco.org/images/44474", "annotation": {"image_id": 44474, "bbox": [33.42, 11.94, 303.68, 407.76], "id": 183024}, "annotation_id": 183024},
+  {"image_id": 196842, "image_url": "http://mscoco.org/images/196842", "annotation": {"image_id": 196842, "bbox": [273.14, 82.25, 72.6, 129.68], "id": 183022, "direction": 3}, "annotation_id": 183022}
+];
 
 var input = null;
 
@@ -73,8 +73,9 @@ function setupExamples() {
         'annotation': {
           'image_id': 167765,
           'bbox': [0.0, 1.44, 182.65, 629.93],
-          'id': 183813},
-          'annotation_id': 183813
+          'id': 183813
+        },
+        'annotation_id': 183813
       },
       'caption': 'Impossible to tell'
     },
@@ -119,15 +120,15 @@ function setupExamples() {
     // Draw image to canvas once image loads.
     // Capture exampleId in callback
     img.onload = (function(id, taskInfo) {
-        return function() {
-          var jCanvas = $('#' + id + ' canvas');
-          drawImageWithBox(jCanvas[0],
-                          this,
-                          taskInfo['annotation']['bbox']);
-          var topOffset = ($('.example-image-container').height()
-                           - jCanvas.height()) / 2;
-          jCanvas.css('top', topOffset);
-        }
+      return function() {
+        var jCanvas = $('#' + id + ' canvas');
+        drawImageWithBox(jCanvas[0],
+          this,
+          taskInfo['annotation']['bbox']);
+        var topOffset = ($('.example-image-container').height()
+                         - jCanvas.height()) / 2;
+        jCanvas.css('top', topOffset);
+      }
     })(exampleId, taskInfo);
   }
 }
@@ -197,15 +198,15 @@ function drawImageWithBox(canvas, image, boundingBox) {
   // Make a copy to allow modification.
   var boundingBox = boundingBox.slice();
   // boundingBox is relative to image; make it relative to canvas.
-  boundingBox[0] += 2*strokeWidth;
-  boundingBox[1] += 2*strokeWidth;
+  boundingBox[0] += 2 * strokeWidth;
+  boundingBox[1] += 2 * strokeWidth;
 
   // Add 2*strokeWidth empty padding around image.
-  canvas.width = image.width + 4*strokeWidth;
-  canvas.height = image.height + 4*strokeWidth;
+  canvas.width = image.width + 4 * strokeWidth;
+  canvas.height = image.height + 4 * strokeWidth;
   var ctx = canvas.getContext("2d");
   // Draw image at the center.
-  ctx.drawImage(image, 2*strokeWidth, 2*strokeWidth);
+  ctx.drawImage(image, 2 * strokeWidth, 2 * strokeWidth);
 
   // Draw a red outline around a black outline, which should hopefully
   // provide enough contrast. Note that the inside of the bounding
@@ -217,24 +218,24 @@ function drawImageWithBox(canvas, image, boundingBox) {
   // squeeze 1.0 stroke widths into the rectangle; so we need to
   // pretend like we're going to draw a 3*strokeWidth stroke.
   var outerBoxDimensions = clipBoxInCanvas(
-    updateBoxForStroke(boundingBox, 3*strokeWidth),
+    updateBoxForStroke(boundingBox, 3 * strokeWidth),
     [canvas.width, canvas.height]);
 
   ctx.strokeStyle = "red";
   ctx.lineWidth = strokeWidth;
   ctx.strokeRect(outerBoxDimensions[0],
-                  outerBoxDimensions[1],
-                  outerBoxDimensions[2],
-                  outerBoxDimensions[3]);
+                 outerBoxDimensions[1],
+                 outerBoxDimensions[2],
+                 outerBoxDimensions[3]);
 
   ctx.strokeStyle = "black";
   var innerBoxDimensions = clipBoxInCanvas(
     updateBoxForStroke(boundingBox, strokeWidth),
     [canvas.width, canvas.height]);
   ctx.strokeRect(innerBoxDimensions[0],
-                  innerBoxDimensions[1],
-                  innerBoxDimensions[2],
-                  innerBoxDimensions[3]);
+                 innerBoxDimensions[1],
+                 innerBoxDimensions[2],
+                 innerBoxDimensions[3]);
 }
 
 // Use the current index to update the image and description
@@ -288,7 +289,9 @@ function main() {
   setupExamples();
 
   // Set up the directions.
-  _.each(input, function() { directions.push(-1); });
+  _.each(input, function() {
+    directions.push(-1);
+  });
 
   // Preload all images
   _.each(input, function(task_info) {
@@ -328,15 +331,15 @@ function main() {
   render();
 }
 
-  function updateSelectedDirection() {
-    // Update the directions array with the selected direction for the
-    // current image.
-    selected_direction_buttons = $('.direction-annotation.active');
-    if (selected_direction_buttons.length == 1) {
-      selected_direction_id = selected_direction_buttons[0].id;
-      directions[idx] = button_id_to_direction[selected_direction_id];
-    }
+function updateSelectedDirection() {
+  // Update the directions array with the selected direction for the
+  // current image.
+  selected_direction_buttons = $('.direction-annotation.active');
+  if (selected_direction_buttons.length == 1) {
+    selected_direction_id = selected_direction_buttons[0].id;
+    directions[idx] = button_id_to_direction[selected_direction_id];
   }
+}
 
 // Update the index, and save the text in the text area.
 function setIdx(new_idx) {
@@ -378,50 +381,50 @@ function enableHit() {
   });
 }
 
-  function getMissingAnnotations() {
-    // Get a list of indices of images that don't have a direction
-    // specified.
-    //
-    // Returns:
-    //  missing_annotations (list)
-    var invalid_direction_indices =
-      _.map(directions, function(d, idx) {
-        if (d == -1) { return idx + 1; } else { return -1; }
-      });
-    invalid_direction_indices =
-      _.filter(invalid_direction_indices,
-               function(idx) { return idx != -1; })
-    return invalid_direction_indices;
-  }
-
-  function submit() {
-    updateSelectedDirection();
-    var invalid_direction_indices = getMissingAnnotations();
-    if (invalid_direction_indices.length > 0) {
-      alert('Direction for image(s) '
-            + invalid_direction_indices.join(', ')
-            + ' missing.');
-      return false;
-    }
-    var num_missed_groundtruth = 0;
-    var num_groundtruth = 0;
-    var output = _.map(_.zip(input, directions), function(x) {
-      if ('direction' in x[0]['annotation']) {
-        num_groundtruth++;
-        if (x[1] != x[0]['annotation']['direction']) {
-          num_missed_groundtruth++;
-        }
-      }
-      return {'annotation_id': x[0]['annotation_id'], 'direction': x[1]};
+function getMissingAnnotations() {
+  // Get a list of indices of images that don't have a direction
+  // specified.
+  //
+  // Returns:
+  //  missing_annotations (list)
+  var invalid_direction_indices =
+    _.map(directions, function(d, idx) {
+      if (d == -1) { return idx + 1; } else { return -1; }
     });
-    if (num_missed_groundtruth / num_groundtruth > 0.2) {
-      var isare = num_missed_groundtruth > 1 ? "are" : "is";
-      alert("There " + isare + " at least " + num_missed_groundtruth
-            + " mislabeled image(s)! Please take another look.")
-      return false;
-    }
-    simpleamt.setOutput(output);
+  invalid_direction_indices =
+    _.filter(invalid_direction_indices,
+             function(idx) { return idx != -1; })
+  return invalid_direction_indices;
+}
+
+function submit() {
+  updateSelectedDirection();
+  var invalid_direction_indices = getMissingAnnotations();
+  if (invalid_direction_indices.length > 0) {
+    alert('Direction for image(s) '
+          + invalid_direction_indices.join(', ')
+          + ' missing.');
+    return false;
   }
+  var num_missed_groundtruth = 0;
+  var num_groundtruth = 0;
+  var output = _.map(_.zip(input, directions), function(x) {
+    if ('direction' in x[0]['annotation']) {
+      num_groundtruth++;
+      if (x[1] != x[0]['annotation']['direction']) {
+        num_missed_groundtruth++;
+      }
+    }
+    return {'annotation_id': x[0]['annotation_id'], 'direction': x[1]};
+  });
+  if (num_missed_groundtruth / num_groundtruth > 0.2) {
+    var isare = num_missed_groundtruth > 1 ? "are" : "is";
+    alert("There " + isare + " at least " + num_missed_groundtruth
+          + " mislabeled image(s)! Please take another look.")
+    return false;
+  }
+  simpleamt.setOutput(output);
+}
 
 $(function() {
   main();
