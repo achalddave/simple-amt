@@ -516,7 +516,7 @@
         // Set up submit handler.
         simpleamt.setupSubmit();
         $('#submit-btn').click(function() {
-          submit()
+          return submit();
         });
       }
 
@@ -538,7 +538,8 @@
 
         function submit() {
           updateSelectedDirection();
-          if (getMissingAnnotations().length > 0) {
+          var invalid_direction_indices = getMissingAnnotations();
+          if (invalid_direction_indices.length > 0) {
             alert('Direction for image(s) '
                   + invalid_direction_indices.join(', ')
                   + ' missing.');
