@@ -29,8 +29,8 @@ var VG = (function(vg) {
    *   the keyboard shortcuts. They start enabled, but only work if the carosel
    *   as a whole is also enabled.
    */
-  vg.Carosel = function(container_div, button_div, num_panes,
-                        show_callback, should_scroll) {
+  vg.Carosel = function(container_div, button_div, num_panes, show_callback,
+                        should_scroll) {
     var that = (this === vg ? {} : this);
 
     var enabled = false;
@@ -44,22 +44,28 @@ var VG = (function(vg) {
     }
 
     // Create buttons
-    var prev_button = $('<button>').prop('disabled', true)
-                                   .text('Previous (left arrow)')
-                                   .addClass('btn btn-default btn-lg padded')
-                                   .appendTo(button_div);
-    var counter_span = $('<span>').addClass('h3 padded vcenter')
-                                  .appendTo(button_div);
-    var next_button = $('<button>').prop('disabled', true)
-                                   .text('Next (right arrow)')
-                                   .addClass('btn btn-default btn-lg padded')
-                                   .appendTo(button_div);
+    var prev_button = $('<button>')
+                          .prop('disabled', true)
+                          .text('Previous (left arrow)')
+                          .addClass('btn btn-default btn-lg padded')
+                          .appendTo(button_div);
+    var counter_span =
+        $('<span>').addClass('h3 padded vcenter').appendTo(button_div);
+    var next_button = $('<button>')
+                          .prop('disabled', true)
+                          .text('Next (right arrow)')
+                          .addClass('btn btn-default btn-lg padded')
+                          .appendTo(button_div);
 
     var current_idx = 0;
 
     // Handlers for selecting next or previous pane
-    var next = function() { if (enabled) select_pane(current_idx + 1, should_scroll); };
-    var prev = function() { if (enabled) select_pane(current_idx - 1, should_scroll); };
+    var next = function() {
+      if (enabled) select_pane(current_idx + 1, should_scroll);
+    };
+    var prev = function() {
+      if (enabled) select_pane(current_idx - 1, should_scroll);
+    };
 
     next_button.click(next);
     prev_button.click(prev);
@@ -67,25 +73,26 @@ var VG = (function(vg) {
     var keyboard_enabled = true;
 
     // Set up keypress handlers for keyboard shortcuts
-    //prevKeys = [37, 65]; // a and left
-    //nextKeys = [39, 68]; // d and right
+    // prevKeys = [37, 65]; // a and left
+    // nextKeys = [39, 68]; // d and right
     prevKeys = [37];
     nextKeys = [39];
-    $(document.documentElement).keyup(function(e) {
-	    if (!keyboard_enabled || !enabled) return;
-	    if ($.inArray(e.keyCode, prevKeys) !== -1) prev();
-	    if ($.inArray(e.keyCode, nextKeys) !== -1) next();
-	});
+    $(document.documentElement)
+        .keyup(function(e) {
+          if (!keyboard_enabled || !enabled) return;
+          if ($.inArray(e.keyCode, prevKeys) !== -1) prev();
+          if ($.inArray(e.keyCode, nextKeys) !== -1) next();
+        });
 
     that.enable = function() {
       enable_buttons();
       enabled = true;
-    }
+    };
 
     that.disable = function() {
       disable_buttons();
       enabled = false;
-    }
+    };
 
     that.enableKeyboardShortcuts = function() { keyboard_enabled = true; };
     that.disableKeyboardShortcuts = function() { keyboard_enabled = false; };
