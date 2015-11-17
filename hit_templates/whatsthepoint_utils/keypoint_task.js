@@ -24,10 +24,9 @@ var VG = (function(vg) {
 
     var max_height = VIEWPORT_HEIGHT;
     max_height -= $('#c-buttons-div').height();
-    var images_div = $('#c-imgs-div');
     var bbox_drawer_options = {
       max_height : max_height,
-      max_width : images_div.width(),
+      max_width : container_div.width(),
 
       gt : task_input.annotation.groundtruth,
       obj_singular : task_input.object_name,
