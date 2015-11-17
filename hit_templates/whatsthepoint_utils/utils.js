@@ -9,8 +9,7 @@ var VG = (function(vg) {
     }
 
     for (var opt in default_options) {
-      if (default_options.hasOwnProperty(opt)
-          && !options.hasOwnProperty(opt)) {
+      if (default_options.hasOwnProperty(opt) && !options.hasOwnProperty(opt)) {
         options[opt] = default_options[opt];
       }
     }
@@ -39,22 +38,24 @@ var VG = (function(vg) {
     for (var i = 0; i < data.length; i++) {
       (function() {
         var panel = $('<div>').addClass('panel panel-default')
-                              .appendTo(div);
+          .appendTo(div);
         var heading = $('<div>').addClass('panel-heading')
-                                .appendTo(panel);
+          .appendTo(panel);
         var title = $('<h4>').addClass('panel-title')
-                             .appendTo(heading);
+          .appendTo(heading);
         var collapse_id = _.uniqueId();
         var collapse = $('<div>').addClass('panel-collapse collapse')
-                                 .attr('id', collapse_id)
-                                 .appendTo(panel);
+          .attr('id', collapse_id)
+          .appendTo(panel);
         var body = $('<div>').addClass('panel-body')
-                             .appendTo(collapse);
-        var link = $('<a>').attr({'data-toggle': 'collapse',
-                                  'data-parent': '#' + div_id,
-                                  'href': '#' + collapse_id,})
-                           .text(data[i].title)
-                           .appendTo(title);
+          .appendTo(collapse);
+        var link = $('<a>').attr({
+            'data-toggle': 'collapse',
+            'data-parent': '#' + div_id,
+            'href': '#' + collapse_id,
+          })
+          .text(data[i].title)
+          .appendTo(title);
         var rendered = false;
         var render_fn = data[i].render;
         collapse.on('show.bs.collapse', function() {
@@ -70,15 +71,20 @@ var VG = (function(vg) {
   /**
    * Dynamicalled create a list of images from data.
    *
-   * div - The dic that will hold the image list.
+   * div - The div that will hold the image list.
    * data - a list of urls.
    *
    */
   vg.make_image_list = function(div, data) {
     for (var image_index in data) {
       var url = data[image_index];
-      $('<img>').attr({'src': url, 'width': 100, 'height': 100, 'margin': '5px'})
-                .appendTo(div);
+      $('<img>').attr({
+          'src': url,
+          'width': 100,
+          'height': 100,
+          'margin': '5px'
+        })
+        .appendTo(div);
     }
   }
 
