@@ -31,7 +31,7 @@ var VG = (function(vg) {
 
       gt : task_input.annotation.groundtruth,
       obj_singular : task_input.object_name,
-      obj_plural : task_input.object_plural
+      obj_plural : task_input.object_name_plural
     };
     var bbox_drawer =
         new VG.PointDrawer(drawer_div, image_url, null, bbox_drawer_options);
