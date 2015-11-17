@@ -23,7 +23,6 @@ var VG = (function(vg) {
     VIEWPORT_HEIGHT = 500;
 
     var max_height = VIEWPORT_HEIGHT;
-    max_height -= $('#task-instr-div').height();
     max_height -= $('#c-buttons-div').height();
     var images_div = $('#c-imgs-div');
     var bbox_drawer_options = {
