@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>Mark a point on a person</title>
+    <!-- simpleamt depends on these libraries -->
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
+    <!-- end of required libraries -->
+    <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
+    <!-- We could host these remotely, but it's easier this way. -->
+    <script>{% include "timer.js" %}</script>
+    <script>{% include "utils.js" %}</script>
+    <script>{% include "point_drawer.js" %}</script>
+    <script>{% include "keypoint_task.js" %}</script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      #task-container {
+        margin: 0 auto;
+        width: 50%;
+        min-width: 700px;
+        text-align: center;
+      }
+      #counter {
+        margin: 0 10px;
+        font-size: 20pt;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="task-container">
+      <div id='image-container'>
+      </div>
+
+      <div id='button-div'>
+        <button id='prev-btn' class='btn btn-lg btn-primary' disabled>Back</button>
+        <span id='counter'>
+          <span class='counter-top'></span> / <span class='counter-bottom'></span>
+        </span>
+        <button id='next-btn' class='btn btn-lg btn-primary' disabled>Next</button>
+      </div>
+    </div>
+    {% include "simpleamt.html" %}
+  </body>
+  <script>
+    {% include "coco_keypoints.js" %}
+  </script>
+</html>
