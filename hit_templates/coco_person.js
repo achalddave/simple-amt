@@ -133,7 +133,7 @@ function setupExamples() {
   }
 }
 
-function updateBoxForStroke(boxDimensions, strokeWidth) {
+function expandBoxForStroke(boxDimensions, strokeWidth) {
   // Scale the bounding box so that when you stroke the border, the
   // inside contains as much space as the original bounding box. This
   // is necessary since the Canvas API draws half of the "strokeWidth"
@@ -190,25 +190,28 @@ function clipBoxInCanvas(boxDimensions, canvasDimensions) {
 }
 
 function drawImageWithBox(canvas, image, boundingBox) {
+  // Draw image onto canvas with the specified bounding box.
+
   // We're going to draw 2 rectangles around the image with the same
-  // strokeWidth. To avoid issues at the borders, we'll create a canvas
-  // with a 2*strokeWidth padding on all sides, and draw the image at
-  // the center.
+  // strokeWidth. To avoid issues at the borders, we'll create a canvas with a
+  // 2 * strokeWidth padding on all sides, and draw the image at the center.
   var strokeWidth = image.height / 75;
+
   // Make a copy to allow modification.
   var boundingBox = boundingBox.slice();
-  // boundingBox is relative to image; make it relative to canvas.
+
+  // Bounding box is relative to image; make it relative to canvas.
   boundingBox[0] += 2 * strokeWidth;
   boundingBox[1] += 2 * strokeWidth;
 
-  // Add 2*strokeWidth empty padding around image.
+  // Add 2 * strokeWidth empty padding around image.
   canvas.width = image.width + 4 * strokeWidth;
   canvas.height = image.height + 4 * strokeWidth;
   var ctx = canvas.getContext("2d");
   // Draw image at the center.
   ctx.drawImage(image, 2 * strokeWidth, 2 * strokeWidth);
 
-  // Draw a red outline around a black outline, which should hopefully
+  // Draw an outer outline around inner outline, which should hopefully
   // provide enough contrast. Note that the inside of the bounding
   // box itself will not be stroked, since we scale the bounding box
   // to stroke only the outside.
@@ -218,7 +221,7 @@ function drawImageWithBox(canvas, image, boundingBox) {
   // squeeze 1.0 stroke widths into the rectangle; so we need to
   // pretend like we're going to draw a 3*strokeWidth stroke.
   var outerBoxDimensions = clipBoxInCanvas(
-    updateBoxForStroke(boundingBox, 3 * strokeWidth),
+    expandBoxForStroke(boundingBox, 3 * strokeWidth),
     [canvas.width, canvas.height]);
 
   ctx.strokeStyle = "red";
@@ -230,7 +233,7 @@ function drawImageWithBox(canvas, image, boundingBox) {
 
   ctx.strokeStyle = "black";
   var innerBoxDimensions = clipBoxInCanvas(
-    updateBoxForStroke(boundingBox, strokeWidth),
+    expandBoxForStroke(boundingBox, strokeWidth),
     [canvas.width, canvas.height]);
   ctx.strokeRect(innerBoxDimensions[0],
                  innerBoxDimensions[1],
