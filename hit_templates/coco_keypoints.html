@@ -10,6 +10,7 @@
     <!-- We could host these remotely, but it's easier this way. -->
     <script>{% include "timer.js" %}</script>
     <script>{% include "utils.js" %}</script>
+    <script>{% include "carosel.js" %}</script>
     <script>{% include "point_drawer.js" %}</script>
     <script>{% include "keypoint_task.js" %}</script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,12 +36,7 @@
       <div id='image-container'>
       </div>
 
-      <div id='button-div'>
-        <button id='prev-btn' class='btn btn-lg btn-primary' disabled>Back</button>
-        <span id='counter'>
-          <span class='counter-top'></span> / <span class='counter-bottom'></span>
-        </span>
-        <button id='next-btn' class='btn btn-lg btn-primary' disabled>Next</button>
+      <div id='buttons-div'>
       </div>
     </div>
     {% include "simpleamt.html" %}

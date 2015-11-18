@@ -22,19 +22,12 @@ var DEFAULT_INPUT = [
 var input = null;
 
 // Some variables to track state of the HIT.
-var idx = 0;
 var enabled = false;
-var images = [];
+var keypointTasks = [];
 
 // Enable the UI.
 function enableHit() {
   enabled = true;
-
-  // Enable components
-  $('#next-btn').click(function() { setIdx(idx + 1) });
-  $('#prev-btn').click(function() { setIdx(idx - 1) });
-  $('#text-area').prop('disabled', false);
-  $('#submit-btn').prop('disabled', false);
 
   // Set up submit handler.
   simpleamt.setupSubmit();
@@ -43,30 +36,16 @@ function enableHit() {
   });
 }
 
-// Use the current index to update the image and description
-function render() {
-  if (!images[idx].complete) {
-    images[idx].onload = function() { render(images); };
-    return;
+function caroselShowCallback(idx, activeDiv) {
+  for (var i = 0; i < keypointTasks.length; ++i) {
+    keypointTasks[i].disable();
   }
-
-  // Refresh the counter
-  $('.counter-top').text(idx + 1);
-  $('.counter-bottom').text(input.length);
-
-  // If the UI is enabled, enable or disable the buttons depending on
-  // the index.
-  if (enabled) {
-    var prev_btn = $('#prev-btn');
-    var next_btn = $('#next-btn');
-    prev_btn.prop('disabled', true);
-    next_btn.prop('disabled', true);
-    if (idx > 0) {
-      prev_btn.prop('disabled', false);
-    }
-    if (idx < input.length - 1)
-      next_btn.prop('disabled', false);
+  if (idx >= keypointTasks.length) {
+    taskInfo = input[idx];
+    var keypointTask = new VG.KeypointTask(activeDiv, taskInfo);
+    keypointTasks.push(keypointTask);
   }
+  keypointTasks[idx].enable();
 }
 
 function main() {
@@ -79,28 +58,14 @@ function main() {
     enableHit();
   }
 
-  // Preload all images
-  _.each(input, function(task_info) {
-    var img = new Image();
-    var img_url = task_info['image_url'];
-    img.src = img_url;
-    images.push(img);
-  });
+  var imageDiv = $('#image-container');
+  var buttonsDiv = $('#buttons-div');
 
-  // Setup keyboard shortcuts
-  if (enabled) {
-    // Do things here if necessary.
-  }
-
-  render();
-
-  var imageDiv = $('#image-container')
-  var keypointTasks = [];
-  input.forEach(function(taskInfo) {
-    var keypointTask = new VG.KeypointTask(imageDiv, taskInfo);
-    keypointTasks.push(keypointTask);
-  });
-  keypointTasks[0].enable();
+  var numImages = input.length;
+  var carosel = new VG.Carosel(imageDiv, buttonsDiv, input.length,
+                               caroselShowCallback, false /*carosel_scroll*/);
+  carosel.enable();
+  carosel.enableKeyboardShortcuts();
 }
 
 $(function() {
