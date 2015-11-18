@@ -51,7 +51,7 @@ var VG = (function(vg, $) {
 
     var timer = new VG.Timer();
 
-    var button_text = 'Click here to confirm there are no ' + options.obj_plural;
+    var button_text = 'Click here if there are no ' + options.obj_plural;
     var button_text_clicked = 'There are no ' + options.obj_plural + ' (click again to undo)';
 
     var timer = new VG.Timer();
@@ -280,14 +280,6 @@ var VG = (function(vg, $) {
       conflict_click_idx = null;
 
       updateCounter();
-
-      if (clicks.length == 0) {
-        buttondiv.attr('hidden', false);
-        binput.attr('disabled', false);
-      } else {
-        binput.attr('disabled', true);
-        buttondiv.attr('hidden', true);
-      }
 
       draw();
     }
