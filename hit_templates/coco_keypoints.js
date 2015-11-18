@@ -8,9 +8,37 @@ var DEFAULT_INPUT = [
       "bbox" : [ 0.0, 1.44, 182.65, 629.93 ],
       "id" : 183813,
       "groundtruth" : {
-        "bbox" : {"x" : 0.0, "y" : 1.44, "w" : 182.65, "h" : 629.93},
-        "num_min" : 1,
-        "num_max" : 1
+        "bbox" : {"x" : 0.0, "y" : 1.44, "w" : 182.65, "h" : 629.93}
+      },
+    },
+    "object_name": "elbow",
+    "object_name_plural": "elbows",
+    "annotation_id" : 183813
+  },
+  {
+    "image_id" : 167765,
+    "image_url" : "http://mscoco.org/images/167765",
+    "annotation" : {
+      "image_id" : 167765,
+      "bbox" : [ 0.0, 1.44, 182.65, 629.93 ],
+      "id" : 183813,
+      "groundtruth" : {
+        "bbox" : {"x" : 0.0, "y" : 1.44, "w" : 182.65, "h" : 629.93}
+      },
+    },
+    "object_name": "elbow",
+    "object_name_plural": "elbows",
+    "annotation_id" : 183813
+  },
+  {
+    "image_id" : 167765,
+    "image_url" : "http://mscoco.org/images/167765",
+    "annotation" : {
+      "image_id" : 167765,
+      "bbox" : [ 0.0, 1.44, 182.65, 629.93 ],
+      "id" : 183813,
+      "groundtruth" : {
+        "bbox" : {"x" : 0.0, "y" : 1.44, "w" : 182.65, "h" : 629.93}
       },
     },
     "object_name": "elbow",
