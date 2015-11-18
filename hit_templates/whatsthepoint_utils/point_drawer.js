@@ -13,6 +13,7 @@ var VG = (function(vg, $) {
     image_opacity: 0.9,
     max_height: 300,
     max_width: 500,
+    single_point_mode: true, // Only allow clicking a single point.
 
     callback: function() {},
   };
@@ -257,7 +258,16 @@ var VG = (function(vg, $) {
       click_pos = getPosition(e);
 
       // TODO: timing
-      idx = detectConflict(click_pos);
+
+      var idx = null;
+      // If single point mode, always replace the currently selected point.
+      if (options.single_point_mode) {
+        if (clicks.length != 0) {
+          idx = 0;
+        }
+      } else {
+        idx = detectConflict(click_pos);
+      }
       if (idx !== null) {
         var x = clicks[idx].x;
         var y = clicks[idx].y;
@@ -268,7 +278,8 @@ var VG = (function(vg, $) {
           'a': 'remove',
           't': timer.total()
         });
-      } else {
+      }
+      if (idx !== null || options.single_point_mode) {
         clicks.push(click_pos);
         history.push({
           'x': toImageCoords(click_pos.x),
