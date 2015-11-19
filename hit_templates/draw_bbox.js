@@ -55,7 +55,11 @@ function _clipBoxInCanvas(boxDimensions, canvasDimensions) {
 }
 
 function drawImageWithBox(canvas, image, boundingBox) {
-  // Draw image onto canvas with the specified bounding box.
+  /***
+   * Draw image onto canvas with the specified bounding box.
+   *
+   * @returns {int} x/y offset of image in canvas.
+   */
 
   // We're going to draw 2 rectangles around the image with the same
   // strokeWidth. To avoid issues at the borders, we'll create a canvas with a
@@ -104,4 +108,5 @@ function drawImageWithBox(canvas, image, boundingBox) {
                  innerBoxDimensions[1],
                  innerBoxDimensions[2],
                  innerBoxDimensions[3]);
+  return 2 * strokeWidth;
 }
