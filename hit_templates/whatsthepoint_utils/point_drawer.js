@@ -60,6 +60,9 @@ var VG = (function(vg, $) {
     // object with properties x, y, add, time
     var history = [];
 
+    // x/y offset of image in canvas.
+    var image_offset = 0;
+
     // todo: set up ground truth evaluation with segmentations 
     // and with number of instances that should be clicked
 
@@ -225,11 +228,11 @@ var VG = (function(vg, $) {
     }
 
     function toCanvasCoords(x) {
-      return x / scale;
+      return x / scale + image_offset;
     }
 
     function toImageCoords(x) {
-      return x * scale;
+      return (x  - image_offset) * scale;
     }
 
     function setCursor(cursor) {
@@ -388,7 +391,12 @@ var VG = (function(vg, $) {
       ctx.clearRect(0, 0, canvas.width(), canvas.height());
       ctx.save();
       ctx.globalAlpha = options.image_opacity;
-      ctx.drawImage(img, 0, 0, canvas.width(), canvas.height());
+      if (options.bbox) {
+        image_offset = drawImageWithBox(canvas[0], img, options.bbox);
+      } else {
+        image_offset = 0;
+        ctx.drawImage(img, 0, 0, canvas.width(), canvas.height());
+      }
       ctx.restore();
 
       drawClicks();
