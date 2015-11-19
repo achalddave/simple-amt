@@ -27,7 +27,7 @@ var VG = (function(vg) {
     var bbox_drawer_options = {
       max_height : max_height,
       max_width : container_div.width(),
-
+      bbox: task_input.annotation.bbox,
       gt : task_input.annotation.groundtruth,
       obj_singular : task_input.object_name,
       obj_plural : task_input.object_name_plural
