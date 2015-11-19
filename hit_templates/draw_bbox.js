@@ -1,4 +1,4 @@
-function expandBoxForStroke(boxDimensions, strokeWidth) {
+function _expandBoxForStroke(boxDimensions, strokeWidth) {
   // Scale the bounding box so that when you stroke the border, the
   // inside contains as much space as the original bounding box. This
   // is necessary since the Canvas API draws half of the "strokeWidth"
@@ -27,7 +27,7 @@ function expandBoxForStroke(boxDimensions, strokeWidth) {
   return [boxStartX, boxStartY, boxWidth, boxHeight];
 }
 
-function clipBoxInCanvas(boxDimensions, canvasDimensions) {
+function _clipBoxInCanvas(boxDimensions, canvasDimensions) {
   // Clips bounding box so it is within the canvas.
   //
   // Params:
@@ -85,8 +85,8 @@ function drawImageWithBox(canvas, image, boundingBox) {
   // 0.5 stroke widths into the rectangle, and the other one will
   // squeeze 1.0 stroke widths into the rectangle; so we need to
   // pretend like we're going to draw a 3*strokeWidth stroke.
-  var outerBoxDimensions = clipBoxInCanvas(
-    expandBoxForStroke(boundingBox, 3 * strokeWidth),
+  var outerBoxDimensions = _clipBoxInCanvas(
+    _expandBoxForStroke(boundingBox, 3 * strokeWidth),
     [canvas.width, canvas.height]);
 
   ctx.strokeStyle = "red";
@@ -97,8 +97,8 @@ function drawImageWithBox(canvas, image, boundingBox) {
                  outerBoxDimensions[3]);
 
   ctx.strokeStyle = "black";
-  var innerBoxDimensions = clipBoxInCanvas(
-    expandBoxForStroke(boundingBox, strokeWidth),
+  var innerBoxDimensions = _clipBoxInCanvas(
+    _expandBoxForStroke(boundingBox, strokeWidth),
     [canvas.width, canvas.height]);
   ctx.strokeRect(innerBoxDimensions[0],
                  innerBoxDimensions[1],
