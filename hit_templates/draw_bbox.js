@@ -93,9 +93,9 @@ function drawImageWithBox(canvas, image, boundingBox) {
   // 0.5 stroke widths into the rectangle, and the other one will
   // squeeze 1.0 stroke widths into the rectangle; so we need to
   // pretend like we're going to draw a 3*strokeWidth stroke.
-  var outerBoxDimensions = _clipBoxInCanvas(
-    _expandBoxForStroke(boundingBox, 3 * strokeWidth),
-    [canvas.width, canvas.height]);
+  var outerBoxDimensions =
+      _clipBoxInCanvas(_expandBoxForStroke(boundingBox, 3 * strokeWidth),
+                       [canvas.width, canvas.height]);
 
   ctx.strokeStyle = "red";
   ctx.lineWidth = strokeWidth;

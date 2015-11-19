@@ -122,9 +122,7 @@ function setupExamples() {
     img.onload = (function(id, taskInfo) {
       return function() {
         var jCanvas = $('#' + id + ' canvas');
-        drawImageWithBox(jCanvas[0],
-          this,
-          taskInfo['annotation']['bbox']);
+        drawImageWithBox(jCanvas[0], this, taskInfo['annotation']['bbox']);
         var topOffset = ($('.example-image-container').height()
                          - jCanvas.height()) / 2;
         jCanvas.css('top', topOffset);
