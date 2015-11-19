@@ -58,6 +58,10 @@ function drawImageWithBox(canvas, image, boundingBox) {
   /***
    * Draw image onto canvas with the specified bounding box.
    *
+   * @param {canvas} canvas HTML Canvas object
+   * @param {img} image HTML image
+   * @param {list} boundingBox List containing [x, y, w, h]
+   *
    * @returns {int} x/y offset of image in canvas.
    */
 
