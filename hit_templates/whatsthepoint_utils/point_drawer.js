@@ -354,19 +354,6 @@ var VG = (function(vg, $) {
         ctx.lineWidth = 3;
         ctx.strokeStyle = "black";
         ctx.stroke();
-
-
-
-        if (i == conflict_click_idx) {
-          ctx.beginPath();
-          ctx.moveTo(x - options.click_radius, y - options.click_radius);
-          ctx.lineTo(x + options.click_radius, y + options.click_radius);
-          ctx.moveTo(x - options.click_radius, y + options.click_radius);
-          ctx.lineTo(x + options.click_radius, y - options.click_radius);
-          ctx.strokeStyle = "red";
-          ctx.lineWidth = 3;
-          ctx.stroke();
-        } else {}
       }
 
       ctx.restore();
