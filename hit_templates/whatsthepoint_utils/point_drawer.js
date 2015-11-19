@@ -393,6 +393,12 @@ var VG = (function(vg, $) {
       ctx.globalAlpha = options.image_opacity;
       if (options.bbox) {
         image_offset = drawImageWithBox(canvas[0], img, options.bbox);
+        // It's not entirely clear why this is necessary; presumably,
+        // drawImageWithBox is moving the canvas in some fashion.
+        canvas_pos = {
+          'x': canvas.offset().left,
+          'y': canvas.offset().top
+        };
       } else {
         image_offset = 0;
         ctx.drawImage(img, 0, 0, canvas.width(), canvas.height());
