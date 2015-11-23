@@ -22,6 +22,13 @@ var VG = (function(vg, $) {
   var TEXT_FONT = TEXT_FONT_SIZE + 'px sans-serif';
   var TEXT_BOX_PADDING = 4;
 
+  vg.EvaluationEnum = {
+    'good': 0,
+    'bad': 1,
+    'incomplete': 2,
+    'neutral': 3
+  }
+
   vg.PointDrawer = function(div, image_url, canvas_width, options) {
     var that = (this === vg ? {} : this);
 
@@ -88,7 +95,7 @@ var VG = (function(vg, $) {
     that.EvalAnswer = function() {
       // check for completeness
       if (clicks.length == 0 && !binput_on)
-        return 'incomplete';
+        return vg.EvaluationEnum.incomplete;
 
       var bChecked = false;
       var bOK = true;
@@ -129,11 +136,11 @@ var VG = (function(vg, $) {
 
       if (bChecked) {
         if (bOK)
-          return 'good';
+          return vg.EvaluationEnum.good;
         else
-          return 'bad';
+          return vg.EvaluationEnum.bad;
       } else {
-        return 'neutral';
+        return vg.EvaluationEnum.neutral;
       }
     }
 
