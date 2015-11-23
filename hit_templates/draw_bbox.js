@@ -54,35 +54,64 @@ function _clipBoxInCanvas(boxDimensions, canvasDimensions) {
   return [boxStartX, boxStartY, boxEndX - boxStartX, boxEndY - boxStartY];
 }
 
-function drawImageWithBox(canvas, image, boundingBox) {
+function drawImageWithBox(canvas, image, boundingBox, useCanvasDimensions) {
   /***
    * Draw image onto canvas with the specified bounding box.
    *
    * @param {canvas} canvas HTML Canvas object
    * @param {img} image HTML image
    * @param {list} boundingBox List containing [x, y, w, h]
+   * @param {bool} useCanvasDimensions If true, draw the image to fit the
+   *    canvas. Otherwise, the canvas is reshaped to the size of the image.
+   *    Default: false.
    *
-   * @returns {int} x/y offset of image in canvas.
+   * @returns {object} imageDetails Contains 'image_offset', 'scale.x',
+   *     'scale.y'.
    */
 
-  // We're going to draw 2 rectangles around the image with the same
-  // strokeWidth. To avoid issues at the borders, we'll create a canvas with a
-  // 2 * strokeWidth padding on all sides, and draw the image at the center.
-  var strokeWidth = image.height / 75;
+  if (typeof useCanvasDimensions === 'undefined') useCanvasDimensions = false;
 
   // Make a copy to allow modification.
   var boundingBox = boundingBox.slice();
 
-  // Bounding box is relative to image; make it relative to canvas.
+  // We're going to draw 2 rectangles around the image with the same
+  // strokeWidth. To avoid issues at the borders, we'll leave 2 * strokeWidth
+  // padding on all sides, and draw the image at the center.
+  var strokeWidth = image.height / 75;
+  var imageWidthOnCanvas, imageHeightOnCanvas;
+  var hScale, wScale;
+
+  if (useCanvasDimensions) {
+    imageWidthOnCanvas = canvas.width - 4 * strokeWidth;
+    imageHeightOnCanvas = canvas.height - 4 * strokeWidth;
+
+    // Scale boundingBox to canvas size.
+    wScale = image.width / imageWidthOnCanvas;
+    hScale = image.height / imageHeightOnCanvas;
+    boundingBox[0] /= wScale;
+    boundingBox[1] /= hScale;
+    boundingBox[2] /= wScale;
+    boundingBox[3] /= hScale;
+  } else {
+    imageWidthOnCanvas = image.width;
+    imageHeightOnCanvas = image.height;
+    hScale = 1;
+    wScale = 1;
+
+    // Provide 2 * strokeWidth border around boxes by expanding the canvas.
+    canvas.width = image.width + 4 * strokeWidth;
+    canvas.height = image.height + 4 * strokeWidth;
+  }
+
+  // Move boundingBox to be relative to image.
   boundingBox[0] += 2 * strokeWidth;
   boundingBox[1] += 2 * strokeWidth;
 
-  // Add 2 * strokeWidth empty padding around image.
-  canvas.width = image.width + 4 * strokeWidth;
-  canvas.height = image.height + 4 * strokeWidth;
   var ctx = canvas.getContext("2d");
+
   // Draw image at the center.
-  ctx.drawImage(image, 2 * strokeWidth, 2 * strokeWidth);
+  ctx.drawImage(image, 2 * strokeWidth, 2 * strokeWidth, imageWidthOnCanvas,
+                imageHeightOnCanvas);
 
   // Draw an outer outline around inner outline, which should hopefully
   // provide enough contrast. Note that the inside of the bounding
@@ -112,5 +141,5 @@ function drawImageWithBox(canvas, image, boundingBox) {
                  innerBoxDimensions[1],
                  innerBoxDimensions[2],
                  innerBoxDimensions[3]);
-  return 2 * strokeWidth;
+  return {'imageOffset': 2 * strokeWidth, 'scale': {'x': wScale, 'y': hScale}};
 }
