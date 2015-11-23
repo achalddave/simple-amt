@@ -10,7 +10,7 @@ var VG = (function(vg, $) {
     conflict_radius: 10,
     pointer_radius: 5, // unused currently
     click_radius: 10,
-    image_opacity: 0.9,
+    image_opacity: 1.0,
     max_height: 300,
     max_width: 500,
     single_point_mode: true, // Only allow clicking a single point.
