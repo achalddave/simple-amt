@@ -27,7 +27,7 @@ var VG = (function(vg, $) {
 
     options = vg.merge_options(options, DEFAULT_OPTIONS);
 
-    var scale = null;
+    var scale = {'x': null, 'y': null};
     var canvas = null;
     var canvas_pos = null;
     var ctx = null;
@@ -73,10 +73,7 @@ var VG = (function(vg, $) {
     function GetClicks() {
       var clicks_img = [];
       for (var i = 0; i < clicks.length; i++) {
-        clicks_img.push({
-          'x': toImageCoords(clicks[i].x),
-          'y': toImageCoords(clicks[i].y)
-        });
+        clicks_img.push(toImageCoords(clicks[i]));
       }
       return clicks_img;
     }
@@ -151,11 +148,9 @@ var VG = (function(vg, $) {
     }
 
     function setup() {
-
-      // scale = img.width / canvas_width;
-      scale = choose_scale(img);
-      canvas_width = img.width / scale;
-      var canvas_height = img.height / scale;
+      var raw_scale = choose_scale(img);
+      canvas_width = img.width / raw_scale;
+      var canvas_height = img.height / raw_scale;
       canvas = $('<canvas>')
         .attr({
           'width': canvas_width,
@@ -227,12 +222,24 @@ var VG = (function(vg, $) {
       }
     }
 
-    function toCanvasCoords(x) {
-      return x / scale + image_offset;
+    function toCanvasCoords(point) {
+      /***
+       * @param {object} point Contains 'x', 'y'.
+       */
+      return {
+        'x': point.x / scale.x + image_offset,
+        'y': point.y / scale.y + image_offset
+      };
     }
 
-    function toImageCoords(x) {
-      return (x  - image_offset) * scale;
+    function toImageCoords(point) {
+      /***
+       * @param {object} point Contains 'x', 'y'.
+       */
+      return {
+        'x': (point.x - image_offset) * scale.x,
+        'y': (point.y - image_offset) * scale.y
+      };
     }
 
     function setCursor(cursor) {
@@ -272,21 +279,21 @@ var VG = (function(vg, $) {
         idx = detectConflict(click_pos);
       }
       if (idx !== null) {
-        var x = clicks[idx].x;
-        var y = clicks[idx].y;
+        var image_point = toImageCoords(clicks[idx]);
         clicks.splice(idx, 1); // remove the conflicting element
         history.push({
-          'x': toImageCoords(x),
-          'y': toImageCoords(y),
+          'x': image_point.x,
+          'y': image_point.y,
           'a': 'remove',
           't': timer.total()
         });
       }
       if (idx !== null || options.single_point_mode) {
+        var image_click_pos = toImageCoords(click_pos);
         clicks.push(click_pos);
         history.push({
-          'x': toImageCoords(click_pos.x),
-          'y': toImageCoords(click_pos.y),
+          'x': image_click_pos.x,
+          'y': image_click_pos.y,
           'a': 'add',
           't': timer.total()
         });
@@ -379,7 +386,10 @@ var VG = (function(vg, $) {
       ctx.save();
       ctx.globalAlpha = options.image_opacity;
       if (options.bbox) {
-        image_offset = drawImageWithBox(canvas[0], img, options.bbox);
+        image_details = drawImageWithBox(canvas[0], img, options.bbox,
+                                         true /*useCanvasDimensions*/);
+        image_offset = image_details.imageOffset;
+        scale = image_details.scale;
         // It's not entirely clear why this is necessary; presumably,
         // drawImageWithBox is moving the canvas in some fashion.
         canvas_pos = {
