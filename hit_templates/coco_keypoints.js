@@ -56,14 +56,78 @@ var input = null;
 var enabled = false;
 var keypointTasks = [];
 
+var validation = {'minAccuracy': 0.9, 'minTimeSpentSeconds': 0.1};
+
+function calculateGroundtruthAccuracy() {}
+
+function error(msg) {
+  $('#error-div').text(msg).removeClass('hidden');
+}
+
+function submit() {
+  if (keypointTasks.length < input.length) {
+    error('Please mark a point for each image.');
+    return false;
+  }
+
+  var answers = [];
+  var groundtruthCorrect = 0;
+  var groundtruthIncorrect = 0;
+  for (var i = 0; i < input.length; ++i) {
+    var answer = keypointTasks[i].GetAnswerIfValid();
+    answers.push(answer);
+
+    if (answer.time < validation.minTimeSpentSeconds) {
+      error('Please take another look at image', i + 1);
+      return false;
+    }
+
+    switch (answer.eval) {
+      case VG.EvaluationEnum.good:
+        groundtruthCorrect += 1;
+        break;
+      case VG.EvaluationEnum.bad:
+        groundtruthIncorrect += 1;
+        break;
+      case VG.EvaluationEnum.incomplete:
+        error('Please take another look at image ' + (i + 1));
+        return false;
+      case VG.EvaluationEnum.neutral:
+        break;
+      default:
+        console.error('Received strange, invalid evaluation:', answer.eval);
+        break;
+    }
+  }
+
+  if (groundtruthCorrect + groundtruthIncorrect > 0) {
+    var accuracy =
+        groundtruthCorrect / (groundtruthCorrect + groundtruthIncorrect);
+    if (accuracy < validation.minAccuracy) {
+      error('Please take another look at your answers.');
+      return false;
+    }
+  }
+
+  simpleamt.setOutput({'output': answers, 'input': input});
+  return true;
+}
+
 // Enable the UI.
 function enableHit() {
   enabled = true;
 
   // Set up submit handler.
   simpleamt.setupSubmit();
+  $('#submit-btn').prop('disabled', false);
   $('#submit-btn').click(function() {
-    return submit();
+    try {
+      return submit();
+    } catch (e) {
+      error('There was an error submitting. Please try again. '
+            + 'If this keeps happening, please email the requester.');
+      return false;
+    }
   });
 }
 
