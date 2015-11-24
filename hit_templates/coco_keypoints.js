@@ -11,7 +11,8 @@ var DEFAULT_INPUT = [
       "iscrowd": 0,
       "image_id": 196842,
       "bbox": [273.14, 82.25, 72.6, 129.68],
-      "groundtruth": {"y": 82.25, "x": 273.14, "w": 72.6, "h": 129.68},
+      "groundtruth":
+          {"bbox": {"y": 82.25, "x": 273.14, "w": 72.6, "h": 129.68}},
       "category_id": 1,
       "id": 183022
     }
@@ -27,7 +28,8 @@ var DEFAULT_INPUT = [
       "iscrowd": 0,
       "image_id": 44474,
       "bbox": [33.42, 11.94, 303.68, 407.76],
-      "groundtruth": {"y": 11.94, "x": 33.42, "w": 303.68, "h": 407.76},
+      "groundtruth":
+          {"bbox": {"y": 11.94, "x": 33.42, "w": 303.68, "h": 407.76}},
       "category_id": 1,
       "id": 183024
     }
@@ -43,7 +45,8 @@ var DEFAULT_INPUT = [
       "iscrowd": 0,
       "image_id": 382669,
       "bbox": [237.59, 107.09, 110.99, 241.92],
-      "groundtruth": {"y": 107.09, "x": 237.59, "w": 110.99, "h": 241.92},
+      "groundtruth":
+          {"bbox": {"y": 107.09, "x": 237.59, "w": 110.99, "h": 241.92}},
       "category_id": 1,
       "id": 183026
     }
