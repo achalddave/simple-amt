@@ -26,10 +26,12 @@ def create_task(annotation_info, name, name_plural,
     """Transform COCO annotation object into a task."""
     if bounding_box_as_groundtruth:
         annotation_info['annotation']['groundtruth'] = {
-            'x': annotation_info['annotation']['bbox'][0],
-            'y': annotation_info['annotation']['bbox'][1],
-            'w': annotation_info['annotation']['bbox'][2],
-            'h': annotation_info['annotation']['bbox'][3],
+            'bbox': {
+                'x': annotation_info['annotation']['bbox'][0],
+                'y': annotation_info['annotation']['bbox'][1],
+                'w': annotation_info['annotation']['bbox'][2],
+                'h': annotation_info['annotation']['bbox'][3],
+            }
         }
     annotation_info['object_name'] = name
     annotation_info['object_name_plural'] = name_plural
