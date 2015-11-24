@@ -313,7 +313,7 @@ function submit() {
   if (num_missed_groundtruth / num_groundtruth > 0.2) {
     var isare = num_missed_groundtruth > 1 ? "are" : "is";
     alert("There " + isare + " at least " + num_missed_groundtruth
-          + " mislabeled image(s)! Please take another look.")
+          + " mislabeled image(s). Please take another look.")
     return false;
   }
   simpleamt.setOutput(output);
