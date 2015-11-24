@@ -59,8 +59,8 @@ var VG = (function(vg, $) {
 
     var timer = new VG.Timer();
 
-    var button_text = 'Click here if there are no ' + options.obj_plural;
-    var button_text_clicked = 'There are no ' + options.obj_plural + ' (click again to undo)';
+    var button_text = 'Click here if there is no ' + options.obj_singular;
+    var button_text_clicked = 'There is no ' + options.obj_singular + ' (click again to undo)';
 
     var timer = new VG.Timer();
 
