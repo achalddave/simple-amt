@@ -166,6 +166,10 @@ function main() {
                                caroselShowCallback, false /*carosel_scroll*/);
   carosel.enable();
   carosel.enableKeyboardShortcuts();
+
+  $('.object-name').text(input.object_name)
+  $('.object-name-plural').text(input.object_name_plural)
+  $('title').text($('title').text().replace('key point', input.object_name));
 }
 
 $(function() {

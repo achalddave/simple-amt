@@ -1,21 +1,29 @@
 <html>
   <head>
-    <title>Mark a point on a person</title>
+    <!-- The string "key point" in <title> will be replaced with the specific
+      key point to be labeled. -->
+    <title>Mark the key point on people</title>
+
     <!-- simpleamt depends on these libraries -->
     <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js'></script>
     <!-- end of required libraries -->
-    <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'></script>
-    <!-- We could host these remotely, but it's easier this way. -->
+    <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+
+    <!-- Utility libraries. We could host them remotely, but this is easier. -->
     <script>{% include "timer.js" %}</script>
     <script>{% include "utils.js" %}</script>
     <script>{% include "carosel.js" %}</script>
     <script>{% include "point_drawer.js" %}</script>
     <script>{% include "draw_bbox.js" %}</script>
     <script>{% include "keypoint_task.js" %}</script>
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
     <style>
+      #instructions {
+        text-align: left;
+      }
       #task-container {
         margin: 0 auto;
         width: 50%;
@@ -36,7 +44,33 @@
     </style>
   </head>
   <body>
+    <!--
+    Any element with the "object-name" class will have its text replaced by the
+    key point to be labeled. Similarly, elements with the "object-name-plural"
+    class will have its text replaced by the plural form of the key point to be
+    labeled.
+    -->
     <div id="task-container">
+      <h2>Mark the <span class="object-name">key point</span> on people</h2>
+      <div id="instructions">
+        <p>
+          Hello! We're looking to label the <span class="object-name">key
+          points</span> on people.
+        </p>
+        <p>
+          An image may have multiple people, but we are interested only in the
+          person inside the red and black box.
+        </p>
+        <p>
+          Please mark one <span class="object-name">key point</span> in each
+          image. If the <span class="object-name">key point</span> is hidden
+          behind another object, guess its most likely position. If the
+          <span class="object-name">key point</span> is outside the image, or
+          if the person clearly does not have a <span class="object-name">key
+          point</span>, click the "Click here if there is no
+          <span class="object-name">key point</span>" button.
+        </p>
+      </div>
       <div id='image-container'>
       </div>
 
