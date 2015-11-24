@@ -10,4 +10,4 @@ if __name__ == '__main__':
   mtc = simpleamt.get_mturk_connection_from_args(args)
 
   for hit in mtc.get_all_hits():
-    print hit
+    print hit.HITId
