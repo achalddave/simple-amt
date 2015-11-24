@@ -3,7 +3,9 @@
 import argparse
 import json
 
-parser = argparse.ArgumentParser(__doc__)
+parser = argparse.ArgumentParser(
+    description=__doc__,
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('tasks_file')
 parser.add_argument('output_hits')
 parser.add_argument('keypoint_name')
