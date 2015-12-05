@@ -59,7 +59,6 @@ var keypointTasks = [];
 
 var validation = {'minAccuracy': 0.9, 'minTimeSpentSeconds': 0.1};
 
-function calculateGroundtruthAccuracy() {}
 
 function error(msg) {
   $('#error-div').text(msg).removeClass('hidden');
