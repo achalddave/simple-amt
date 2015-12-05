@@ -57,8 +57,7 @@ var input = null;
 var enabled = false;
 var keypointTasks = [];
 
-var validation = {'minAccuracy': 0.9, 'minTimeSpentSeconds': 0.1};
-
+var validation = {'minAccuracy': 0.7, 'minTimeSpentSeconds': 0.1};
 
 function error(msg) {
   $('#error-div').text(msg).removeClass('hidden');
