@@ -143,7 +143,9 @@ function caroselShowCallback(idx, activeDiv) {
     var keypointTask = new VG.KeypointTask(activeDiv, taskInfo);
     keypointTasks.push(keypointTask);
   }
-  keypointTasks[idx].enable();
+  if (enabled) {
+    keypointTasks[idx].enable();
+  }
 }
 
 function main() {
@@ -162,8 +164,10 @@ function main() {
   var numImages = input.questions.length;
   var carosel = new VG.Carosel(imageDiv, buttonsDiv, numImages,
                                caroselShowCallback, false /*carosel_scroll*/);
-  carosel.enable();
-  carosel.enableKeyboardShortcuts();
+  if (enabled) {
+    carosel.enable();
+    carosel.enableKeyboardShortcuts();
+  }
 
   $('.object-name').text(input.object_name)
   $('.object-name-plural').text(input.object_name_plural)
